@@ -28,50 +28,84 @@ public class PlayerMovementOld : MonoBehaviour
         {
             speed = 5f;
         }
-        
+
         float xpos = Input.GetAxis("Horizontal");
         float ypos = Input.GetAxis("Vertical");
-        
-        Vector3 newpos = new Vector3(xpos,0,ypos);
+
+        Vector3 newpos = new Vector3(xpos, 0, ypos);
 
         transform.position += newpos * speed * Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            hasjumped = true;
-            goup = true;
-        }
-        if (hasjumped)
-        {
-            Jump();
-        }
-    }
-
-    void Jump()
-    {
-        if (goup)
-        {
-            t += Time.deltaTime * 10;
-            float height = Mathf.Lerp(1.05f, 2.05f, t);
-            transform.position = new Vector3(transform.position.x, height, transform.position.z);
-            if (t >= 1)
-            {
-                t = 0;
-                goup = false;
-                godown = true;
-            }
-        }
-        else if (godown)
-        {
-            t += Time.deltaTime * 10;
-            float height = Mathf.Lerp(2.05f, 1.05f, t);
-            transform.position = new Vector3(transform.position.x, height, transform.position.z);
-            if (t >= 1)
-            {
-                t = 0;
-                godown = false;
-                hasjumped = false;
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    hasjumped = true;
+        //    goup = true;
+        //}
+        //if (hasjumped)
+        //{
+        //    Jump();
+        //}
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //void Jump()
+    //{
+    //    if (goup)
+    //    {
+    //        t += Time.deltaTime * 10;
+    //        float height = Mathf.Lerp(1.05f, 2.05f, t);
+    //        transform.position = new Vector3(transform.position.x, height, transform.position.z);
+    //        if (t >= 1)
+    //        {
+    //            t = 0;
+    //            goup = false;
+    //            godown = true;
+    //        }
+    //    }
+    //    else if (godown)
+    //    {
+    //        t += Time.deltaTime * 10;
+    //        float height = Mathf.Lerp(2.05f, 1.05f, t);
+    //        transform.position = new Vector3(transform.position.x, height, transform.position.z);
+    //        if (t >= 1)
+    //        {
+    //            t = 0;
+    //            godown = false;
+    //            hasjumped = false;
+    //        }
+    //    }
+    //}
+//}
