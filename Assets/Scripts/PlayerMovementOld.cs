@@ -11,6 +11,7 @@ public class PlayerMovementOld : MonoBehaviour
     bool goup = false;
     bool godown = false;
     bool hasjumped = false;
+    public Joystick Joystick;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +47,7 @@ public class PlayerMovementOld : MonoBehaviour
             Jump();
         }
     }
-    void Jump()
+    public void Jump()
     {
         if (goup)
         {
