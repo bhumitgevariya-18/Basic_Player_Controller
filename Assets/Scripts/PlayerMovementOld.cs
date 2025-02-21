@@ -26,13 +26,13 @@ public class PlayerMovementOld : MonoBehaviour
         }
         else
         {
-            speed = 5f;
+            speed = 3f;
         }
-        
+
         float xpos = Input.GetAxis("Horizontal");
         float ypos = Input.GetAxis("Vertical");
-        
-        Vector3 newpos = new Vector3(xpos,0,ypos);
+
+        Vector3 newpos = new Vector3(xpos, 0, ypos);
 
         transform.position += newpos * speed * Time.deltaTime;
 
@@ -46,7 +46,6 @@ public class PlayerMovementOld : MonoBehaviour
             Jump();
         }
     }
-
     void Jump()
     {
         if (goup)
