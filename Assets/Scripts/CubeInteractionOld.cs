@@ -5,7 +5,6 @@ using UnityEngine;
 public class CubeInteractionOld : MonoBehaviour
 {
     float speed = 50f;
-    Vector3 oldangles;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,12 +17,9 @@ public class CubeInteractionOld : MonoBehaviour
         float xpos = Input.GetAxis("Horizontal");
         float ypos = Input.GetAxis("Vertical");
 
+
         Vector3 newpos = new Vector3(ypos, -xpos, 0);
 
-        oldangles.x = (transform.eulerAngles.x);
-        oldangles.y = (transform.eulerAngles.y);
-        oldangles.z = (transform.eulerAngles.z);
-
-        transform.rotation = Quaternion.Euler(oldangles + newpos * speed * Time.deltaTime);
+        transform.Rotate(newpos * speed * Time.deltaTime,Space.World);
     }
 }
