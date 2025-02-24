@@ -37,7 +37,7 @@ public class PlayerMovementOld : MonoBehaviour
 
         transform.position += newpos * speed * Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Space) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+        if (Input.GetKeyDown(KeyCode.Space) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began))
         {
             hasjumped = true;
             goup = true;
