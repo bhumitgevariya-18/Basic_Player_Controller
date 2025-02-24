@@ -12,6 +12,7 @@ public class PlayerMovementOld : MonoBehaviour
     bool godown = false;
     bool hasjumped = false;
     public Joystick Joystick;
+    public bool joystick;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,14 +31,20 @@ public class PlayerMovementOld : MonoBehaviour
             speed = 3f;
         }
 
-        float xpos = Input.GetAxis("Horizontal") + Joystick.Horizontal;
-        float ypos = Input.GetAxis("Vertical") + Joystick.Vertical;
+        float xpos = Input.GetAxis("Horizontal");
+        float ypos = Input.GetAxis("Vertical");
+
+        if (joystick)
+        {
+            xpos = Joystick.Horizontal;
+            ypos = Joystick.Vertical;
+        }
 
         Vector3 newpos = new Vector3(xpos, 0, ypos);
 
         transform.position += newpos * speed * Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Space) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             hasjumped = true;
             goup = true;

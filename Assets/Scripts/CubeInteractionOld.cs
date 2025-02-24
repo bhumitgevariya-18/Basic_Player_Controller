@@ -22,8 +22,23 @@ public class CubeInteractionOld : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            xpos += Input.GetAxis("Mouse X");
-            ypos += Input.GetAxis("Mouse Y");
+            xpos = Input.GetAxis("Mouse X");
+            ypos = Input.GetAxis("Mouse Y");
+        }
+
+        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Stationary)
+        {
+            Vector2 touchpos = Input.GetTouch(0).deltaPosition;
+            
+            if (touchpos.x < 0.0f)
+            {
+                transform.Translate(Vector3.left * 10 * Time.deltaTime);
+            }
+            else if (touchpos.x > 0.0f)
+            {
+                transform.Translate(Vector3.right * 10 * Time.deltaTime);
+            }
+
         }
 
         Vector3 newpos = new Vector3(ypos, -xpos, 0);
