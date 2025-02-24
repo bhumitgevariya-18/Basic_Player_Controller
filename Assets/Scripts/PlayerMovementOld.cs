@@ -30,14 +30,14 @@ public class PlayerMovementOld : MonoBehaviour
             speed = 3f;
         }
 
-        float xpos = Input.GetAxis("Horizontal");
-        float ypos = Input.GetAxis("Vertical");
+        float xpos = Input.GetAxis("Horizontal") + Joystick.Horizontal;
+        float ypos = Input.GetAxis("Vertical") + Joystick.Vertical;
 
         Vector3 newpos = new Vector3(xpos, 0, ypos);
 
         transform.position += newpos * speed * Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
         {
             hasjumped = true;
             goup = true;
