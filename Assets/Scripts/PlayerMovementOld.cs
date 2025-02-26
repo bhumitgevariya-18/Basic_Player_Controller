@@ -6,61 +6,85 @@ using UnityEngine.UI;
 public class PlayerMovementOld : MonoBehaviour
 {
     float speed;
-    public Toggle runtoggle;
     float t;
+    public Toggle runtoggle;
+    public Button jumpbutton;
+    float xpos;
+    float ypos;
     bool goup = false;
     bool godown = false;
     bool hasjumped = false;
-    Vector2 touchpos;
     public Joystick Joystick;
+    public bool keyboard;
     public bool joystick;
-    RectTransform joystickRect;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        runtoggle.gameObject.SetActive(false);
+        Joystick.gameObject.SetActive(false);
+        jumpbutton.gameObject.SetActive(false);
     }
-
     // Update is called once per frame
     void Update()
     {
+        if (keyboard)
+        {
+            KeyboardIP();
+        }
+        
+        if (joystick)
+        {
+            JoystickIP();
+        }
+
+        Vector3 newpos = new Vector3(xpos, 0, ypos);
+        transform.position += newpos * speed * Time.deltaTime;
+
+        
+    }
+
+    public void KeyboardIP()
+    {
+        xpos = Input.GetAxis("Horizontal");
+        ypos = Input.GetAxis("Vertical");
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            Run();
+        }
+        else
+        {
+            Walk();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            hasjumped = true;
+        }
+
+        if (hasjumped)
+        {
+            goup = true;
+            Jump();
+        }
+    }
+
+    public void JoystickIP()
+    {
+        runtoggle.gameObject.SetActive(true);
+        Joystick.gameObject.SetActive(true);
+        jumpbutton.gameObject.SetActive(true);
+
+        xpos = Joystick.Horizontal;
+        ypos = Joystick.Vertical;
+
         if (runtoggle.isOn)
         {
-            speed = 20f;
+            speed = 10f;
         }
         else
         {
             speed = 3f;
-        }
-
-        Joystick.gameObject.SetActive(false);
-
-        float xpos = Input.GetAxis("Horizontal");
-        float ypos = Input.GetAxis("Vertical");
-
-        if (joystick)
-        {
-            Joystick.gameObject.SetActive(true);
-            joystickRect = Joystick.GetComponent<RectTransform>();
-            xpos = Joystick.Horizontal;
-            ypos = Joystick.Vertical;
-        }
-
-
-
-        Vector3 newpos = new Vector3(xpos, 0, ypos);
-
-        transform.position += newpos * speed * Time.deltaTime;
-
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) && !TouchedJoystick())
-        {
-            hasjumped = true;
-            goup = true;
-        }
-        if (hasjumped)
-        {
-            Jump();
         }
     }
     public void Jump()
@@ -91,29 +115,36 @@ public class PlayerMovementOld : MonoBehaviour
         }
     }
 
-    bool TouchedJoystick()
+    public void Run()
     {
-        bool istouch = false;
+        speed = 10f;
+    }
+    public void Walk()
+    {
+        speed = 3f;
+    }
 
-        if (joystickRect == null)
+    public void ButtonJump()
+    {
+        while(transform.position.y < 2.05)
         {
-            return istouch;
+            t += Time.deltaTime * 10;
+            float height = Mathf.Lerp(1.05f, 2.05f, t);
+            transform.position = new Vector3(transform.position.x, height, transform.position.z);
+            if (t >= 1)
+            {
+                t = 0;
+            }
         }
-
-        if (Input.touchCount > 0)
+        while(transform.position.y > 1.05)
         {
-            touchpos = Input.GetTouch(0).position;
+            t += Time.deltaTime * 10;
+            float height = Mathf.Lerp(2.05f, 1.05f, t);
+            transform.position = new Vector3(transform.position.x, height, transform.position.z);
+            if (t >= 1)
+            {
+                t = 0;
+            }
         }
-        else if (Input.GetMouseButtonDown(0)) 
-        {
-            touchpos = Input.mousePosition;
-        }
-
-        if(RectTransformUtility.RectangleContainsScreenPoint(joystickRect, touchpos))
-        {
-            istouch = true;
-        }
-
-        return istouch;
     }
 }

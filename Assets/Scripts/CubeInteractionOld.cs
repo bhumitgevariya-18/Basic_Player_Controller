@@ -1,28 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 public class CubeInteractionOld : MonoBehaviour
 {
-    float speed = 50f;
     Vector3 mpos;
+    Vector3 newpos;
+    Vector3 cubesize;
     float xpos;
     float ypos;
-    float zoomSpeed = 0.1f;
-    float minZoom = 2f;
-    float maxZoom = 15f;
+    public bool onkeyboard;
+    public bool onmobile;
+    public bool onmouse;
 
+    private void Start()
+    {
+        cubesize = transform.localScale;
+    }
     // Update is called once per frame
     void Update()
     {
+        if (onkeyboard)
+        {
+            KeyboardIP();
+        }
+
+        if (onmouse)
+        {
+            MouseIP();
+        }
+
+        if (onmobile)
+        {
+            MobileIP();
+        }
+    }
+
+    void KeyboardIP()
+    {
+        float speed = 50f;
         xpos = Input.GetAxis("Horizontal");
         ypos = Input.GetAxis("Vertical");
 
+        newpos = new Vector3(ypos, -xpos, 0);
+        transform.Rotate(newpos * speed * Time.deltaTime, Space.World);
+    }
+
+    void MouseIP()
+    {
+        float speed = 50f;
         if (Input.GetMouseButton(0))
         {
             xpos = Input.GetAxis("Mouse X");
             ypos = Input.GetAxis("Mouse Y");
         }
+
+        newpos = new Vector3(ypos, -xpos, 0);
+        transform.Rotate(newpos * speed * Time.deltaTime, Space.World);
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -32,77 +67,67 @@ public class CubeInteractionOld : MonoBehaviour
         {
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - mpos);
         }
+    }
 
+    void MobileIP()
+    {
         if (Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0);
-
             if (Input.touchCount == 1)
             {
-                if (touch.phase == TouchPhase.Moved)
+                float speed = 10f;
+                Touch touch = Input.GetTouch(0);
+
+                Vector2 startingpos = touch.position - touch.deltaPosition;
+                float dist = Vector2.Distance(startingpos, touch.position);
+                float rotthr = 50f;
+                
+                if (dist >= rotthr)
                 {
                     xpos = touch.deltaPosition.x;
                     ypos = touch.deltaPosition.y;
+                    newpos = new Vector3(ypos, -xpos, 0);
+                    transform.Rotate(newpos * speed * Time.deltaTime, Space.World);
+                }
+            }
+            else if (Input.touchCount == 2)
+            {
+                Touch touch1 = Input.GetTouch(0);
+                Touch touch2 = Input.GetTouch(1);
+
+                Vector2 startingpost1 = touch1.position - touch1.deltaPosition;
+                Vector2 startingpost2 = touch2.position - touch2.deltaPosition;
+
+                float startingdist = Vector2.Distance(startingpost1,startingpost2);
+                float currentdist = Vector2.Distance(touch1.position, touch2.position);
+
+                float distdiff = currentdist - startingdist;
+                float movethr = 5f;
+                float zoomthr = 10f;
+                float check = Mathf.Abs(distdiff);
+                if (check > movethr && check < zoomthr)
+                {
+                    float x = (touch1.deltaPosition.x + touch2.deltaPosition.x) / 2;
+                    float y = (touch1.deltaPosition.y + touch2.deltaPosition.y) / 2;
+                    Vector3 newpos = new Vector3(x, y, 0);
+                    transform.position += newpos * Time.deltaTime;
+                }
+                else if(check > zoomthr)
+                {
+                    float min = cubesize.x;
+                    float max = min + 3;
+
+                    float zoom = distdiff / 100;
+                    
+                    Vector3 size = transform.localScale + new Vector3(zoom, zoom, zoom);
+
+                    size.x = Mathf.Clamp(size.x, min, max);
+                    size.y = Mathf.Clamp(size.y, min, max);
+                    size.z = Mathf.Clamp(size.z, min, max);
+
+                    transform.localScale = size;
                 }
             }
         }
-
-        Vector3 newpos = new Vector3(ypos, -xpos, 0);
-
-        transform.Rotate(newpos * speed * Time.deltaTime, Space.World);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//            // **Two Touches - Move & Zoom**
-//            else if (Input.touchCount == 2)
-//            {
-//                Touch touch1 = Input.GetTouch(0);
-//                Touch touch2 = Input.GetTouch(1);
-
-//                // **Move with two fingers**
-//                if (touch1.phase == TouchPhase.Moved && touch2.phase == TouchPhase.Moved)
-//                {
-//                    Vector2 avgDelta = (touch1.deltaPosition + touch2.deltaPosition) / 2;
-//                    Vector3 move = new Vector3(avgDelta.x, avgDelta.y, 0) * Time.deltaTime;
-//                    transform.position += move;
-//                }
-
-//                // **Zoom with pinch gesture (Limited)**
-//                float prevDistance = (touch1.position - touch1.deltaPosition - (touch2.position - touch2.deltaPosition)).magnitude;
-//                float currentDistance = (touch1.position - touch2.position).magnitude;
-//                float deltaDistance = currentDistance - prevDistance;
-
-//                if (Mathf.Abs(deltaDistance) > 0.1f)
-//                {
-//                    float newZoom = Camera.main.transform.position.z + deltaDistance * zoomSpeed;
-//                    newZoom = Mathf.Clamp(newZoom, -maxZoom, -minZoom); // Limit zoom
-//                    Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, newZoom);
-//                }
-//            }
-//        }
-//    }
-//}
-
