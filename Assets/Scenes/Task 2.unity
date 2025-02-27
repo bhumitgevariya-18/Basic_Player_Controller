@@ -334,9 +334,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d88cf4977e9322d4bb69283f1a5e1528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onkeyboard: 0
-  onmobile: 1
-  onmouse: 0
+  onkeyboard: 1
+  onmobile: 0
+  onmouse: 1
 --- !u!1 &862113000
 GameObject:
   m_ObjectHideFlags: 0

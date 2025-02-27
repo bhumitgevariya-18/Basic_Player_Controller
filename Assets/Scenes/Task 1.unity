@@ -233,8 +233,8 @@ MonoBehaviour:
   runtoggle: {fileID: 788900442}
   jumpbutton: {fileID: 1080296471}
   Joystick: {fileID: 1358645396}
-  keyboard: 0
-  joystick: 1
+  keyboard: 1
+  joystick: 0
 --- !u!136 &407879571
 CapsuleCollider:
   m_ObjectHideFlags: 0
