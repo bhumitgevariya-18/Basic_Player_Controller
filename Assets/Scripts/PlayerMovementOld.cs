@@ -17,21 +17,25 @@ public class PlayerMovementOld : MonoBehaviour
     public Joystick Joystick;
     public bool keyboard;
     public bool joystick;
+    float h;
 
     private void Start()
     {
+        h = transform.position.y;
+
         runtoggle.gameObject.SetActive(false);
         Joystick.gameObject.SetActive(false);
         jumpbutton.gameObject.SetActive(false);
+        jumpbutton.onClick.AddListener(ButtonJump);
     }
-    // Update is called once per frame
+
     void Update()
     {
         if (keyboard)
         {
             KeyboardIP();
         }
-        
+
         if (joystick)
         {
             JoystickIP();
@@ -40,7 +44,10 @@ public class PlayerMovementOld : MonoBehaviour
         Vector3 newpos = new Vector3(xpos, 0, ypos);
         transform.position += newpos * speed * Time.deltaTime;
 
-        
+        if (hasjumped)
+        {
+            Jump();
+        }
     }
 
     public void KeyboardIP()
@@ -57,15 +64,10 @@ public class PlayerMovementOld : MonoBehaviour
             Walk();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !hasjumped)
         {
             hasjumped = true;
-        }
-
-        if (hasjumped)
-        {
             goup = true;
-            Jump();
         }
     }
 
@@ -92,7 +94,7 @@ public class PlayerMovementOld : MonoBehaviour
         if (goup)
         {
             t += Time.deltaTime * 10;
-            float height = Mathf.Lerp(1.05f, 2.05f, t);
+            float height = Mathf.Lerp(h, h + 1, t);
             transform.position = new Vector3(transform.position.x, height, transform.position.z);
             if (t >= 1)
             {
@@ -104,7 +106,7 @@ public class PlayerMovementOld : MonoBehaviour
         else if (godown)
         {
             t += Time.deltaTime * 10;
-            float height = Mathf.Lerp(2.05f, 1.05f, t);
+            float height = Mathf.Lerp(h + 1, h, t);
             transform.position = new Vector3(transform.position.x, height, transform.position.z);
             if (t >= 1)
             {
@@ -114,11 +116,11 @@ public class PlayerMovementOld : MonoBehaviour
             }
         }
     }
-
     public void Run()
     {
         speed = 10f;
     }
+
     public void Walk()
     {
         speed = 3f;
@@ -126,25 +128,10 @@ public class PlayerMovementOld : MonoBehaviour
 
     public void ButtonJump()
     {
-        while(transform.position.y < 2.05)
+        if (!hasjumped)
         {
-            t += Time.deltaTime * 10;
-            float height = Mathf.Lerp(1.05f, 2.05f, t);
-            transform.position = new Vector3(transform.position.x, height, transform.position.z);
-            if (t >= 1)
-            {
-                t = 0;
-            }
-        }
-        while(transform.position.y > 1.05)
-        {
-            t += Time.deltaTime * 10;
-            float height = Mathf.Lerp(2.05f, 1.05f, t);
-            transform.position = new Vector3(transform.position.x, height, transform.position.z);
-            if (t >= 1)
-            {
-                t = 0;
-            }
+            hasjumped = true;
+            goup = true;
         }
     }
 }

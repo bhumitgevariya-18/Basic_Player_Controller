@@ -81,7 +81,7 @@ public class CubeInteractionOld : MonoBehaviour
                 Vector2 startingpos = touch.position - touch.deltaPosition;
                 float dist = Vector2.Distance(startingpos, touch.position);
                 float rotthr = 50f;
-                
+
                 if (dist >= rotthr)
                 {
                     xpos = touch.deltaPosition.x;
@@ -98,12 +98,12 @@ public class CubeInteractionOld : MonoBehaviour
                 Vector2 startingpost1 = touch1.position - touch1.deltaPosition;
                 Vector2 startingpost2 = touch2.position - touch2.deltaPosition;
 
-                float startingdist = Vector2.Distance(startingpost1,startingpost2);
+                float startingdist = Vector2.Distance(startingpost1, startingpost2);
                 float currentdist = Vector2.Distance(touch1.position, touch2.position);
 
                 float distdiff = currentdist - startingdist;
-                float movethr = 5f;
-                float zoomthr = 10f;
+                float movethr = 15f;
+                float zoomthr = 50f;
                 float check = Mathf.Abs(distdiff);
                 if (check > movethr && check < zoomthr)
                 {
@@ -112,13 +112,13 @@ public class CubeInteractionOld : MonoBehaviour
                     Vector3 newpos = new Vector3(x, y, 0);
                     transform.position += newpos * Time.deltaTime;
                 }
-                else if(check > zoomthr)
+                else if (check > zoomthr)
                 {
                     float min = cubesize.x;
                     float max = min + 3;
 
                     float zoom = distdiff / 100;
-                    
+
                     Vector3 size = transform.localScale + new Vector3(zoom, zoom, zoom);
 
                     size.x = Mathf.Clamp(size.x, min, max);
