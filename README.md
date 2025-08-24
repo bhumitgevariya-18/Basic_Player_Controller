@@ -1,4 +1,6 @@
-﻿# Unity Cube Interaction & Player Movement Demo
+![Image](https://github.com/user-attachments/assets/8da3f8b7-da4c-47cd-b7de-5da220ae0b09)
+
+# Unity Cube Interaction & Player Movement Demo
 
 ## Project Description
 
