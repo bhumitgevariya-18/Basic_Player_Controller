@@ -1,4 +1,4 @@
-﻿# 🟦 Unity Cube Interaction & Player Movement Demo
+﻿# Unity Cube Interaction & Player Movement Demo
 
 ## Project Description
 
